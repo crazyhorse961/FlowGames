@@ -14,8 +14,11 @@ public final class Configs {
     public static final FileConfiguration MYSQL = null;
 
     private static File folder;
-    public static void init() {
+    static {
         folder = FlowGames.getInstance().getDataFolder();
+    }
+
+    static void init() {
         try {
             for(Field field : Configs.class.getDeclaredFields()) {
                 if(field == null) {
@@ -27,5 +30,9 @@ public final class Configs {
         catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    static void copy(String path) {
+        FlowGames.getInstance().saveResource(path, false);
     }
 }
