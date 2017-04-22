@@ -6,5 +6,6 @@ package it.minecube.flowgames.api;
 public interface Minigame
 {
     String getName();
-
+    int getMinPlayers();
+    int getMaxPlayers();
 }

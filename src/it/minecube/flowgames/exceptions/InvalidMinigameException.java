@@ -12,6 +12,6 @@ public class InvalidMinigameException extends RuntimeException
     public InvalidMinigameException(){}
 
     public InvalidMinigameException(String message){
-
+        super(message);
     }
 }
