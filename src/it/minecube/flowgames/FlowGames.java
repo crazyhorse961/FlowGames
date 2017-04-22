@@ -33,7 +33,6 @@ public class FlowGames extends JavaPlugin
     }
 
     @Override
-    @SuppressWarnings("null")
     public void onEnable() {
         instance = this;
         createMysqlFile();
