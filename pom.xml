@@ -55,6 +55,7 @@
             <artifactId>fawe-api</artifactId>
             <version>latest</version>
         </dependency>
+
     </dependencies>
 
     <properties>
