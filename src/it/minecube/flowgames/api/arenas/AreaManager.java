@@ -1,7 +1,6 @@
 package it.minecube.flowgames.api.arenas;
 
 import it.minecube.flowgames.FlowGames;
-import it.minecube.flowgames.api.Minigame;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +17,9 @@ import java.util.List;
 /**
  * Created by Gio on 22/04/2017.
  */
-class AreaManager {
+public class AreaManager {
 
-    void export(File file, Location start, Location end, boolean calculateAir) {
+    public void export(File file, Location start, Location end, boolean calculateAir) {
         if(!start.getWorld().getName().equals(end.getWorld().getName())) {
             throw new IllegalArgumentException("Different worlds!");
         }
@@ -68,7 +67,7 @@ class AreaManager {
         });
     }
 
-    HashMap<Location, Material> parse(File file) {
+    public HashMap<Location, Material> parse(File file) {
         HashMap<Location, Material> blocks = new HashMap<>();
         Bukkit.getScheduler().runTaskAsynchronously(FlowGames.getInstance(), () -> {
             try {
@@ -88,7 +87,15 @@ class AreaManager {
         return blocks;
     }
 
-    public String[] getSavedAreas(Minigame minigame) {
-        return new File(minigame.getDataFolder() + File.separator + "arenas").list();
+    public String[] getSavedAreas() {
+        return new File(FlowGames.getInstance().getDataFolder() + File.separator + "arenas").list();
+    }
+
+    public boolean exists(String area) {
+        for(String a : getSavedAreas()) {
+            if(a.equalsIgnoreCase(area + ".txt"))
+                return true;
+        }
+        return false;
     }
 }

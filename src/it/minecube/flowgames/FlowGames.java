@@ -8,6 +8,7 @@ import co.insou.pool.Pool;
 import co.insou.pool.PoolDriver;
 import co.insou.pool.properties.PropertyFactory;
 import it.minecube.flowgames.api.Minigame;
+import it.minecube.flowgames.api.arenas.AreaManager;
 import it.minecube.flowgames.exceptions.InvalidMinigameException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,7 +33,8 @@ public class FlowGames extends JavaPlugin
     private Pool pool;
 
     private Map<UUID, Location[]> wandMap = new HashMap<>();
-    private List<Minigame> minigames;
+    private Minigame minigame;
+    private AreaManager areaManager;
 
 
     public static FlowGames getInstance() {
@@ -44,12 +45,16 @@ public class FlowGames extends JavaPlugin
         return pool;
     }
 
+    public AreaManager getAreaManager() {
+        return areaManager;
+    }
+
     public Map<UUID, Location[]> getWandMap() {
         return wandMap;
     }
 
-    public List<Minigame> getMinigames() {
-        return minigames;
+    public Minigame getMinigame() {
+        return minigame;
     }
 
     @Override
@@ -62,13 +67,13 @@ public class FlowGames extends JavaPlugin
         pool.withProperty(PropertyFactory.connectionTimeout(50000));
         pool.build();
         Bukkit.getScheduler().runTaskAsynchronously(this, this::createTables);
+        areaManager = new AreaManager();
     }
 
     public void hook(Minigame minigame){
         if(!minigame.getClass().isAssignableFrom(JavaPlugin.class)){
             throw new InvalidMinigameException(minigame.getClass().getName() + " must extends JavaPlugin");
         }
-        String name = minigame.getName();
     }
 
     private void createConfigs() {
@@ -84,8 +89,7 @@ public class FlowGames extends JavaPlugin
         }
     }
 
-    public int registerMinigame(Minigame minigame) {
-        minigames.add(minigame);
-        return minigames.indexOf(minigame);
+    public void registerMinigame(Minigame minigame) {
+        this.minigame = minigame;
     }
 }
