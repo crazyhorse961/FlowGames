@@ -12,6 +12,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>fawe</id>
+            <url>http://ci.athion.net/job/FastAsyncWorldEdit/ws/mvn/</url>
+        </repository>
     </repositories>
     <dependencies>
         <!--Spigot API-->
@@ -28,6 +32,34 @@
             <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.22.0-CR1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-alpha1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.boydti</groupId>
+            <artifactId>fawe-api</artifactId>
+            <version>latest</version>
+        </dependency>
     </dependencies>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
 </project>
