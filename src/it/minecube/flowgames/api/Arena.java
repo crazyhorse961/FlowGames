@@ -18,6 +18,8 @@ public abstract class Arena {
     public void paste(Location location, File file) {
         AreaManager manager = new AreaManager();
         HashMap<Location, Material> blocks = manager.parse(file);
+        for(Location loc : blocks.keySet()) {
 
+        }
     }
 }
