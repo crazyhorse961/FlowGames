@@ -10,11 +10,16 @@ import co.insou.pool.properties.PropertyFactory;
 import it.minecube.flowgames.api.Minigame;
 import it.minecube.flowgames.exceptions.InvalidMinigameException;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static it.minecube.flowgames.Configs.*;
 
@@ -27,6 +32,9 @@ public class FlowGames extends JavaPlugin
     private static FlowGames instance;
     private Pool pool;
 
+    private Map<UUID, Location[]> wandMap = new HashMap<>();
+    private List<Minigame> minigames;
+
 
     public static FlowGames getInstance() {
         return instance;
@@ -34,6 +42,14 @@ public class FlowGames extends JavaPlugin
 
     public Pool getPool() {
         return pool;
+    }
+
+    public Map<UUID, Location[]> getWandMap() {
+        return wandMap;
+    }
+
+    public List<Minigame> getMinigames() {
+        return minigames;
     }
 
     @Override
@@ -66,5 +82,10 @@ public class FlowGames extends JavaPlugin
         }catch(SQLException ex){
             ex.printStackTrace();
         }
+    }
+
+    public int registerMinigame(Minigame minigame) {
+        minigames.add(minigame);
+        return minigames.indexOf(minigame);
     }
 }

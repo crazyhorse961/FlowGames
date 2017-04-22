@@ -1,6 +1,7 @@
-package it.minecube.flowgames.api;
+package it.minecube.flowgames.api.arenas;
 
 import it.minecube.flowgames.FlowGames;
+import it.minecube.flowgames.api.Minigame;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 class AreaManager {
 
-    void export(File file, Location start, Location end) {
+    void export(File file, Location start, Location end, boolean calculateAir) {
         if(!start.getWorld().getName().equals(end.getWorld().getName())) {
             throw new IllegalArgumentException("Different worlds!");
         }
@@ -48,8 +49,14 @@ class AreaManager {
                 file.createNewFile();
                 List<String> lines = new ArrayList<>();
                 lines.add(start.getWorld().getName());
+                lines.add("spawnpoints=");
                 for(Block block : blocks) {
-                    if(block.getType() != Material.AIR) {
+                    if(block.getType() == Material.BEACON){
+                        lines.set(1,
+                                lines.get(1) + block.getLocation().getX() + "," + block.getLocation().getY() + block.getLocation().getZ() + ";");
+                        continue;
+                    }
+                    if(block.getType() != Material.AIR || calculateAir) {
                         lines.add(block.getX() + ";" + block.getY() + ";" + block.getZ() + ";" + block.getType());
                     }
                 }
@@ -66,7 +73,7 @@ class AreaManager {
         Bukkit.getScheduler().runTaskAsynchronously(FlowGames.getInstance(), () -> {
             try {
                 List<String> lines = Files.readAllLines(file.toPath());
-                for(int i = 1; i < lines.size(); i++) {
+                for(int i = 2; i < lines.size(); i++) {
                     String[] parts = lines.get(i).split(";");
                     blocks.put(new Location(Bukkit.getWorld(lines.get(0)),
                             Integer.parseInt(parts[0]) + 0D,
@@ -79,5 +86,9 @@ class AreaManager {
             }
         });
         return blocks;
+    }
+
+    public String[] getSavedAreas(Minigame minigame) {
+        return new File(minigame.getDataFolder() + File.separator + "arenas").list();
     }
 }
