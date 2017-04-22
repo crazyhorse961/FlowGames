@@ -1,0 +1,6 @@
+mysql:
+username: Cavallino
+password: Lugano
+host: google.ch
+db-name: SVIZZERAH
+table-name: money
