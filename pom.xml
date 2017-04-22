@@ -50,11 +50,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.8.0-alpha1</version>
         </dependency>
-        <dependency>
-            <groupId>com.boydti</groupId>
-            <artifactId>fawe-api</artifactId>
-            <version>latest</version>
-        </dependency>
     </dependencies>
 
     <properties>
