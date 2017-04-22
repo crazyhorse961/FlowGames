@@ -1,2 +1,2 @@
 # FlowGames
-Spigot Minigames API, java 8 way.
+Spigot Minigame API for the Minecube server
