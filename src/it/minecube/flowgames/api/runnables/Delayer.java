@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 public class Delayer extends Task {
 
     private int task;
+    boolean cancelled;
 
     public Delayer(Plugin plugin) {
         super(plugin);
@@ -22,5 +23,11 @@ public class Delayer extends Task {
     @Override
     public void cancel() {
         Bukkit.getScheduler().cancelTask(task);
+        cancelled = true;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
     }
 }

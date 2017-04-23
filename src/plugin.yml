@@ -1,0 +1,13 @@
+main: it.minecube.flowgames.FlowGames
+name: FlowGames
+version: MineCube
+authors: [crazyhoorse961, iAmGio]
+depend: [PlaceholderAPI]
+
+commands:
+  wand:
+    usage: /[command]
+  arena:
+    usage: /[command] <args>
+  setlobby:
+    usage: /[command]

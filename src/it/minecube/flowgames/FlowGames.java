@@ -10,9 +10,16 @@ import co.insou.pool.properties.PropertyFactory;
 import it.minecube.flowgames.api.ItemBuilder;
 import it.minecube.flowgames.api.Minigame;
 import it.minecube.flowgames.api.arenas.AreaManager;
+import it.minecube.flowgames.commands.ArenaCommand;
+import it.minecube.flowgames.commands.LobbyCommand;
+import it.minecube.flowgames.commands.WandCommand;
 import it.minecube.flowgames.exceptions.InvalidMinigameException;
+import it.minecube.flowgames.listeners.LobbyListener;
+import it.minecube.flowgames.listeners.WandListener;
+import it.minecube.flowgames.placeholders.CoinPlaceholder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
@@ -71,6 +78,12 @@ public class FlowGames extends JavaPlugin
         Bukkit.getScheduler().runTaskAsynchronously(this, this::createTables);
         areaManager = new AreaManager();
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
+            new CoinPlaceholder(this).hook();
+        }
+        registerCommands();
+        registerListeners();
+
     }
 
     public void hook(Minigame minigame){
@@ -95,5 +108,17 @@ public class FlowGames extends JavaPlugin
 
     private void registerMinigame(Minigame minigame) {
         this.minigame = minigame;
+    }
+
+    private void registerListeners(){
+        PluginManager pm = Bukkit.getPluginManager();
+        pm.registerEvents(new WandListener(), this);
+        pm.registerEvents(new LobbyListener(), this);
+    }
+
+    private void registerCommands(){
+        getCommand("arena").setExecutor(new ArenaCommand());
+        getCommand("setlobby").setExecutor(new LobbyCommand());
+        getCommand("wand").setExecutor(new WandCommand());
     }
 }

@@ -10,15 +10,19 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Created by Gio on 23/04/2017.
  */
-public class QuitListener implements Listener {
+public class LobbyListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         Minigame minigame = FlowGames.getInstance().getMinigame();
         MinigamePlayer minigamePlayer = new MinigamePlayer(e.getPlayer());
 
-        if(minigamePlayer.isInLobby())
+        if(minigamePlayer.isInLobby()) {
             minigame.getLobby().removePlayer(minigamePlayer);
+            if(minigame.getLobby().getPlayers().size() == 0) {
+                minigame.getLobby().stopTimer();
+            }
+        }
         else if(minigamePlayer.isInGame())
             minigame.removePlayer(minigamePlayer);
     }

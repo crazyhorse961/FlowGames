@@ -44,6 +44,8 @@ public class MinigamePlayer {
             return false;
         }
         lobby.addPlayer(this);
+        if(lobby.isTimerStopped())
+            lobby.startTimer();
         player.teleport(lobby.getLocation());
         return true;
     }

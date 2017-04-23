@@ -15,4 +15,5 @@ abstract class Task {
 
     public abstract Task exec(long ticks, FlowTask task);
     public abstract void cancel();
+    public abstract boolean isCancelled();
 }
