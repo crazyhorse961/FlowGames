@@ -15,7 +15,6 @@ public abstract class AbstractArena {
     public abstract int getMaxPlayers();
 
     private File file;
-    private HashMap<Location, Material> blocks;
 
     protected AbstractArena(File file) {
         this.file = file;
@@ -23,7 +22,7 @@ public abstract class AbstractArena {
 
     protected Arena paste(Location location) {
         AreaManager manager = new AreaManager();
-        blocks = manager.parse(file);
+        HashMap<Location, Material> blocks = manager.parse(file);
         for(Location loc : blocks.keySet()) {
             Material material = blocks.get(loc);
             loc = loc.add(location);

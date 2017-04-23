@@ -1,5 +1,7 @@
 package it.minecube.flowgames.api.players;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import it.minecube.flowgames.FlowGames;
 import it.minecube.flowgames.api.Minigame;
 import org.bukkit.entity.Player;
@@ -30,7 +32,8 @@ public class MinigamePlayer {
         return player;
     }
 
-    public void join(Minigame minigame) {
+    public void join() {
+        Minigame minigame = FlowGames.getInstance().getMinigame();
         //TODO
     }
 
@@ -38,7 +41,7 @@ public class MinigamePlayer {
         try(Connection conn = FlowGames.getInstance().getPool().getConnection()){
             PreparedStatement pst = conn.prepareStatement("SELECT 'coins' FROM 'money' WHERE 'uuid'='" + player.getUniqueId() + "'");
             ResultSet rs = pst.executeQuery();
-            while(rs.next()){
+            if(rs.next()){
                 return rs.getInt("coins");
             }
         }catch(SQLException ex){
@@ -60,5 +63,13 @@ public class MinigamePlayer {
     }
     public void removeCoins(int coins){
         setCoins(getCoins() - coins);
+    }
+
+    public void connect(String bungeeServer){
+        ByteArrayDataOutput bado = ByteStreams.newDataOutput();
+        bado.writeUTF("Connect");
+        bado.writeUTF(bungeeServer);
+        player.sendPluginMessage(FlowGames.getInstance(), "BungeeCord", bado.toByteArray());
+
     }
 }

@@ -7,6 +7,7 @@ import co.insou.pool.CredentialPackageFactory;
 import co.insou.pool.Pool;
 import co.insou.pool.PoolDriver;
 import co.insou.pool.properties.PropertyFactory;
+import it.minecube.flowgames.api.ItemBuilder;
 import it.minecube.flowgames.api.Minigame;
 import it.minecube.flowgames.api.arenas.AreaManager;
 import it.minecube.flowgames.exceptions.InvalidMinigameException;
@@ -21,7 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static it.minecube.flowgames.Configs.*;
+import static it.minecube.flowgames.Configs.MYSQL;
+import static it.minecube.flowgames.Configs.copy;
 
 /**
  * @author crazyhoorse961
@@ -61,19 +63,21 @@ public class FlowGames extends JavaPlugin
     public void onEnable() {
         instance = this;
         createConfigs();
-        init();
+        ItemBuilder.setInstance(new ItemBuilder());
         pool = new Pool(CredentialPackageFactory.get(MYSQL.getString("mysql.username"), MYSQL.getString("mysql.password")), PoolDriver.MYSQL);
         pool.withMin(5).withMax(5).withMysqlUrl(MYSQL.getString("mysql.host"), MYSQL.getString("mysql.database"));
         pool.withProperty(PropertyFactory.connectionTimeout(50000));
         pool.build();
         Bukkit.getScheduler().runTaskAsynchronously(this, this::createTables);
         areaManager = new AreaManager();
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     public void hook(Minigame minigame){
         if(!minigame.getClass().isAssignableFrom(JavaPlugin.class)){
             throw new InvalidMinigameException(minigame.getClass().getName() + " must extends JavaPlugin");
         }
+        registerMinigame(minigame);
     }
 
     private void createConfigs() {
@@ -89,7 +93,7 @@ public class FlowGames extends JavaPlugin
         }
     }
 
-    public void registerMinigame(Minigame minigame) {
+    private void registerMinigame(Minigame minigame) {
         this.minigame = minigame;
     }
 }
