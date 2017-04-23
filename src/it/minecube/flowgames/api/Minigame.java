@@ -2,7 +2,9 @@ package it.minecube.flowgames.api;
 
 import it.minecube.flowgames.api.arenas.AbstractArena;
 import it.minecube.flowgames.api.kits.Kit;
-import org.bukkit.entity.Player;
+import it.minecube.flowgames.api.lobbies.Lobby;
+import it.minecube.flowgames.api.players.MinigamePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.util.List;
@@ -14,10 +16,16 @@ public interface Minigame {
 
     String getName();
     List<String> getDescription();
+    int getMinPlayers();
+    int getMaxPlayers();
+    List<MinigamePlayer> getPlayers();
+    boolean addPlayer(MinigamePlayer player);
+    void removePlayer(MinigamePlayer player);
+    boolean containsPlayer(MinigamePlayer player);
     File getDataFolder();
-    Player[] getPlayers();
     AbstractArena[] getPossibleArenas();
     AbstractArena getArena();
-    void setArena(AbstractArena arena);
+    Lobby getLobby();
     Kit[] getKits();
+    FileConfiguration getConfig();
 }

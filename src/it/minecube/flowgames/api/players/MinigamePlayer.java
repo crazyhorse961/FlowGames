@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import it.minecube.flowgames.FlowGames;
 import it.minecube.flowgames.api.Minigame;
+import it.minecube.flowgames.api.lobbies.Lobby;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -35,6 +36,24 @@ public class MinigamePlayer {
     public void join() {
         Minigame minigame = FlowGames.getInstance().getMinigame();
         //TODO
+    }
+
+    public boolean joinLobby() {
+        Lobby lobby = FlowGames.getInstance().getMinigame().getLobby();
+        if(lobby.getPlayers().size() == lobby.getCapacity() || lobby.containsPlayer(this)) {
+            return false;
+        }
+        lobby.addPlayer(this);
+        player.teleport(lobby.getLocation());
+        return true;
+    }
+
+    public boolean isInLobby() {
+        return FlowGames.getInstance().getMinigame().getLobby().containsPlayer(this);
+    }
+
+    public boolean isInGame() {
+        return FlowGames.getInstance().getMinigame().containsPlayer(this);
     }
 
     public int getCoins() {
