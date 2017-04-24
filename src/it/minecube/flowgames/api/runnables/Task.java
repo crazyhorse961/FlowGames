@@ -8,6 +8,8 @@ import org.bukkit.plugin.Plugin;
 abstract class Task {
 
     Plugin plugin;
+    boolean cancelled;
+    int task;
 
     Task(Plugin plugin) {
         this.plugin = plugin;
@@ -15,5 +17,8 @@ abstract class Task {
 
     public abstract Task exec(long ticks, FlowTask task);
     public abstract void cancel();
-    public abstract boolean isCancelled();
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
 }
