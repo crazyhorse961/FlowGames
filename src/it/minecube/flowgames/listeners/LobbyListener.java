@@ -3,6 +3,8 @@ package it.minecube.flowgames.listeners;
 import it.minecube.flowgames.FlowGames;
 import it.minecube.flowgames.api.Minigame;
 import it.minecube.flowgames.api.players.MinigamePlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -25,5 +27,7 @@ public class LobbyListener implements Listener {
         }
         else if(minigamePlayer.isInGame())
             minigame.removePlayer(minigamePlayer);
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&a[" + minigame.getName() + "&a] &e" + minigamePlayer.getPlayer().getName() + " è uscito dalla partita"));
+        
     }
 }

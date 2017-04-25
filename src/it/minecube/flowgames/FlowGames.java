@@ -12,10 +12,9 @@ import it.minecube.flowgames.api.Minigame;
 import it.minecube.flowgames.api.arenas.AreaManager;
 import it.minecube.flowgames.commands.ArenaCommand;
 import it.minecube.flowgames.commands.LobbyCommand;
-import it.minecube.flowgames.commands.WandCommand;
 import it.minecube.flowgames.exceptions.InvalidMinigameException;
+import it.minecube.flowgames.listeners.DeathListener;
 import it.minecube.flowgames.listeners.LobbyListener;
-import it.minecube.flowgames.listeners.WandListener;
 import it.minecube.flowgames.placeholders.CoinPlaceholder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -86,6 +85,11 @@ public class FlowGames extends JavaPlugin
 
     }
 
+    @Override
+    public void onDisable(){
+        pool.close();
+    }
+
     public void hook(Minigame minigame){
         if(!minigame.getClass().isAssignableFrom(JavaPlugin.class)){
             throw new InvalidMinigameException(minigame.getClass().getName() + " must extends JavaPlugin");
@@ -112,13 +116,12 @@ public class FlowGames extends JavaPlugin
 
     private void registerListeners(){
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new WandListener(), this);
         pm.registerEvents(new LobbyListener(), this);
+        pm.registerEvents(new DeathListener(), this);
     }
 
     private void registerCommands(){
         getCommand("arena").setExecutor(new ArenaCommand());
         getCommand("setlobby").setExecutor(new LobbyCommand());
-        getCommand("wand").setExecutor(new WandCommand());
     }
 }

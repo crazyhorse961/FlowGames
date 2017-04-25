@@ -4,6 +4,8 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import it.minecube.flowgames.FlowGames;
 import it.minecube.flowgames.api.Minigame;
+import it.minecube.flowgames.api.arenas.Arena;
+import it.minecube.flowgames.api.arenas.SpawnPoint;
 import it.minecube.flowgames.api.lobbies.Lobby;
 import org.bukkit.entity.Player;
 
@@ -33,9 +35,14 @@ public class MinigamePlayer {
         return player;
     }
 
-    public void join() {
+    public boolean join(Arena arena) {
         Minigame minigame = FlowGames.getInstance().getMinigame();
-        //TODO
+        if(minigame.getPlayers().size() == minigame.getMaxPlayers())
+            return false;
+        SpawnPoint point = SpawnPoint.nextFree(arena.getSpawnPoints());
+        player.teleport(point.getLocation());
+        point.setUsed(this);
+        return true;
     }
 
     public boolean joinLobby() {

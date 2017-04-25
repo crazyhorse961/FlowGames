@@ -37,18 +37,17 @@ public class ArenaCommand implements CommandExecutor
                         }
                         p.sendMessage(ChatColor.DARK_GREEN + "Arene salvate:");
                         for(String area : areas)
-                            p.sendMessage(ChatColor.GREEN + s.replace(".txt", ""));
+                            p.sendMessage(ChatColor.GREEN + s.replace(".schematic", ""));
                         return true;
                 }
             case 2:
                 switch(strings[0]){
                     case "export":
                         if(FlowGames.getInstance().getWandMap().get(p.getUniqueId()).length < 2){
-                            p.sendMessage(ChatColor.GREEN + "Seleziona i bordi con l'ascia!");
+                            p.sendMessage(ChatColor.GREEN + "Seleziona i bordi con WorldEdit!");
                             return true;
                         }
-                        File f = new File(FlowGames.getInstance().getMinigame().getDataFolder() + File.separator + "arenas", strings[1] + ".txt");
-                        FlowGames.getInstance().getAreaManager().export(f, FlowGames.getInstance().getWandMap().get(p.getUniqueId())[0], FlowGames.getInstance().getWandMap().get(p.getUniqueId())[1], true);
+                        FlowGames.getInstance().getAreaManager().export(p, strings[1]);
                         p.sendMessage(ChatColor.GREEN + "Arena esportata!");
                         return true;
                 }

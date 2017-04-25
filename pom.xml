@@ -20,6 +20,10 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>>http://maven.sk89q.com/repo/</url>
+        </repository>
     </repositories>
     <dependencies>
         <!--Spigot API-->
@@ -59,6 +63,12 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.0.8</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <artifactId>..</artifactId>
+            <groupId>..</groupId>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/worldedit-bukkit-6.1.7-SNAPSHOT-dist.jar</systemPath>
         </dependency>
     </dependencies>
 

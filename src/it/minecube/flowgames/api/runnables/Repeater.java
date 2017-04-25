@@ -8,16 +8,13 @@ import org.bukkit.plugin.Plugin;
  */
 public class Repeater extends Task {
 
-    private int task;
-    private boolean cancelled;
-
     public Repeater(Plugin plugin) {
         super(plugin);
     }
 
     @Override
     public Repeater exec(long ticks, FlowTask task) {
-        this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, task, 0, ticks);
+        super.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, task, 0, ticks);
         return new Repeater(plugin);
     }
 
@@ -25,10 +22,5 @@ public class Repeater extends Task {
     public void cancel() {
         Bukkit.getScheduler().cancelTask(task);
         cancelled = true;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
     }
 }
