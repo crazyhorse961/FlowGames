@@ -2,8 +2,6 @@ package it.minecube.flowgames.api;/**
  * Created by nini7 on 23.04.2017.
  */
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import it.minecube.flowgames.exceptions.InvalidMinigameException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,27 +44,27 @@ public class MenuBuilder
             this.menu = this;
         }
 
-        public Menu size(@Nullable Integer size){
+        public Menu size(Integer size){
             this.size = size;
             return menu;
         }
 
-        public Menu item(@NotNull  ItemStack item, @Nullable int slot){
+        public Menu item(ItemStack item, int slot){
             items.put(slot,item);
             return menu;
         }
 
-        public Menu type(@Nullable  InventoryType type){
+        public Menu type(InventoryType type){
             this.type = type;
             return menu;
         }
 
-        public Menu player(@NotNull Player holder){
+        public Menu player(Player holder){
             this.player = holder;
             return menu;
         }
 
-        public Menu name(@NotNull  String name){
+        public Menu name(String name){
             this.name = name;
             return menu;
         }
