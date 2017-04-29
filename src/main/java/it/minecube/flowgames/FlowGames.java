@@ -9,7 +9,6 @@ import co.insou.pool.PoolDriver;
 import co.insou.pool.properties.PropertyFactory;
 import it.minecube.flowgames.api.ItemBuilder;
 import it.minecube.flowgames.api.Minigame;
-import it.minecube.flowgames.api.arenas.AreaManager;
 import it.minecube.flowgames.commands.ArenaCommand;
 import it.minecube.flowgames.commands.LobbyCommand;
 import it.minecube.flowgames.exceptions.InvalidMinigameException;
@@ -42,7 +41,6 @@ public class FlowGames extends JavaPlugin
 
     private Map<UUID, Location[]> wandMap = new HashMap<>();
     private Minigame minigame;
-    private AreaManager areaManager;
 
 
     public static FlowGames getInstance() {
@@ -53,9 +51,6 @@ public class FlowGames extends JavaPlugin
         return pool;
     }
 
-    public AreaManager getAreaManager() {
-        return areaManager;
-    }
 
     public Map<UUID, Location[]> getWandMap() {
         return wandMap;
@@ -75,7 +70,6 @@ public class FlowGames extends JavaPlugin
         pool.withProperty(PropertyFactory.connectionTimeout(50000));
         pool.build();
         Bukkit.getScheduler().runTaskAsynchronously(this, this::createTables);
-        areaManager = new AreaManager();
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new CoinPlaceholder(this).hook();

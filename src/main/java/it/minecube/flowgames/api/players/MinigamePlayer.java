@@ -2,11 +2,14 @@ package it.minecube.flowgames.api.players;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.sun.istack.internal.Nullable;
 import it.minecube.flowgames.FlowGames;
 import it.minecube.flowgames.api.Minigame;
 import it.minecube.flowgames.api.arenas.Arena;
 import it.minecube.flowgames.api.arenas.SpawnPoint;
+import it.minecube.flowgames.api.kits.Kit;
 import it.minecube.flowgames.api.lobbies.Lobby;
+import it.minecube.flowgames.api.runnables.Repeater;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -20,7 +23,9 @@ import java.sql.SQLException;
 public class MinigamePlayer {
 
     private final Player player;
+    private Kit kit;
 
+    private Repeater repeater;
 
     public MinigamePlayer(Player player){
         this.player = player;
@@ -98,6 +103,25 @@ public class MinigamePlayer {
         bado.writeUTF("Connect");
         bado.writeUTF(bungeeServer);
         player.sendPluginMessage(FlowGames.getInstance(), "BungeeCord", bado.toByteArray());
+    }
 
+    public Kit getKit() {
+        return kit;
+    }
+
+    public void setKit(@Nullable Kit kit) {
+        if(kit == null)
+            player.getInventory().clear();
+        this.kit = kit;
+
+        if(kit != null) {
+            this.repeater = new Repeater(FlowGames.getInstance()).exec(10,
+                    () -> kit.getAbilities().forEach(player::addPotionEffect));
+        }
+        else this.repeater.cancel();
+    }
+
+    public boolean hasKit() {
+        return this.kit != null;
     }
 }

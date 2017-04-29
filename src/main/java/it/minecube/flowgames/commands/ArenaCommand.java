@@ -3,6 +3,7 @@ package it.minecube.flowgames.commands;/**
  */
 
 import it.minecube.flowgames.FlowGames;
+import it.minecube.flowgames.external.Schematic;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,7 +31,7 @@ public class ArenaCommand implements CommandExecutor
             case 1:
                 switch(strings[0]) {
                     case "list":
-                        String[] areas = FlowGames.getInstance().getAreaManager().getSavedAreas();
+                        String[] areas = new File(FlowGames.getInstance().getDataFolder() + File.separator + "schematics").list();
                         if(areas.length == 0) {
                             p.sendMessage(ChatColor.RED + "Nessuna arena salvata");
                             return true;
@@ -47,7 +48,7 @@ public class ArenaCommand implements CommandExecutor
                             p.sendMessage(ChatColor.GREEN + "Seleziona i bordi con WorldEdit!");
                             return true;
                         }
-                        FlowGames.getInstance().getAreaManager().export(p, strings[1]);
+                        Schematic.save(p, strings[1]);
                         p.sendMessage(ChatColor.GREEN + "Arena esportata!");
                         return true;
                 }

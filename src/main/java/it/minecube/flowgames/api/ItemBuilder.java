@@ -7,12 +7,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Gio on 23/04/2017.
  */
-public class ItemBuilder {
+public final class ItemBuilder {
 
     private static ItemBuilder instance;
     public static void setInstance(ItemBuilder instance) {
@@ -23,7 +24,7 @@ public class ItemBuilder {
     private short data = 0;
     private String name = "";
     private List<String> lore;
-    private Enchantment enchantment;
+    private HashMap<Enchantment, Integer> enchantments = new HashMap<>();
     private List<ItemFlag> flags;
 
     public static ItemBuilder type(Material type) {
@@ -37,7 +38,12 @@ public class ItemBuilder {
     }
 
     public ItemBuilder enchant(Enchantment enchantment) {
-        this.enchantment = enchantment;
+        this.enchantments.put(enchantment, 1);
+        return this;
+    }
+
+    public ItemBuilder enchant(Enchantment enchantment, int power) {
+        this.enchantments.put(enchantment, power);
         return this;
     }
 
@@ -62,8 +68,8 @@ public class ItemBuilder {
         meta.setDisplayName(name);
         if(lore != null)
             meta.setLore(lore);
-        if(enchantment != null) {
-            meta.addEnchant(enchantment, 1, true);
+        if(!enchantments.isEmpty()) {
+            enchantments.keySet().forEach(e -> meta.addEnchant(e, enchantments.get(e), true));
         }
         meta.addItemFlags(flags.toArray(new ItemFlag[flags.size()]));
         stack.setItemMeta(meta);

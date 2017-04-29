@@ -15,7 +15,7 @@ import java.util.List;
 public interface Minigame {
 
     String getName();
-    List<String> getDescription();
+    List<String> getMiniDescription();
     int getMinPlayers();
     int getMaxPlayers();
     List<MinigamePlayer> getPlayers();
@@ -28,4 +28,5 @@ public interface Minigame {
     Lobby getLobby();
     Kit[] getKits();
     FileConfiguration getConfig();
+
 }

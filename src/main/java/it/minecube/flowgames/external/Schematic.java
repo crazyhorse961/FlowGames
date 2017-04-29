@@ -8,6 +8,8 @@ import java.io.IOException;
 import it.minecube.flowgames.FlowGames;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.CuboidClipboard;
@@ -27,6 +29,7 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 
 /**
  *         @author BlahBerrys (eballer48) - ericballard7@gmail.com
+ *         Modified by @nini7
  *
  *         An easy-to-use API for saving, loading, and pasting WorldEdit/MCEdit
  *         schematics. (Built against WorldEdit 6.1)
@@ -59,8 +62,19 @@ public class Schematic {
             clipboard.copy(editSession);
             SchematicFormat.MCEDIT.save(clipboard, schematic);
             editSession.flushQueue();
-
-            player.sendMessage("Saved schematic!");
+            Location maxLoc = wep.getSelection(player).getMaximumPoint();
+            Location minLoc = wep.getSelection(player).getMinimumPoint();
+            File data = new File(FlowGames.getInstance().getDataFolder() + File.separator + "schematics", schematicName + "-data");
+            data.createNewFile();
+            FileConfiguration moment = YamlConfiguration.loadConfiguration(data);
+            moment.set("min.x", minLoc.getX());
+            moment.set("min.y", minLoc.getY());
+            moment.set("min.z", minLoc.getZ());
+            moment.set("max.x", maxLoc.getX());
+            moment.set("max.y", maxLoc.getY());
+            moment.set("max.z", maxLoc.getZ());
+            moment.set("world", maxLoc.getWorld());
+            moment.save(data);
         } catch (IOException | DataException ex) {
             ex.printStackTrace();
         } catch (EmptyClipboardException ex) {
@@ -69,7 +83,7 @@ public class Schematic {
     }
 
 
-    public static void paste(String schematicName, Location pasteLoc) {
+    public static Location[] paste(String schematicName, Location pasteLoc) {
         try {
             File dir = new File(FlowGames.getInstance().getDataFolder(), "/schematics/" + schematicName);
 
@@ -81,11 +95,17 @@ public class Schematic {
 
             clipboard.paste(editSession, BukkitUtil.toVector(pasteLoc), true);
             editSession.flushQueue();
+            File data = new File(FlowGames.getInstance().getDataFolder() + File.separator + "schematics", schematicName + "-data");
+            FileConfiguration moment = YamlConfiguration.loadConfiguration(data);
+            Location max = new Location(Bukkit.getWorld(moment.getString("world")), moment.getDouble("max.x"), moment.getDouble("max.y"), moment.getDouble("max.z"));
+            Location min = new Location(Bukkit.getWorld(moment.getString("world")), moment.getDouble("min.x"), moment.getDouble("min.y"), moment.getDouble("min.z"));
+            return new Location[]{ max,min };
         } catch (DataException | IOException ex) {
             ex.printStackTrace();
         } catch (MaxChangedBlocksException ex) {
             ex.printStackTrace();
         }
+        return null;
     }
 
 }
